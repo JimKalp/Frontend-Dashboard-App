@@ -1,25 +1,50 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useState, useEffect} from 'react'
+//import axios from 'axios'
+import Chart from './components/Chart'
+import './App.css'
 
-function App() {
+function updateChart() {
+  async function fetchData(){
+    const url = 'http://localhost:3001/metrics';
+    const response = await fetch(url);
+    const datapoints = await response.json();
+    console.log(datapoints);
+    return datapoints;
+  };
+  fetchData().then(datapoints => {
+    const metric1 = datapoints.metrics.map(
+      function(index){
+        return index.metric_1;
+      })
+      console.log(metric1);
+  })
+  
+  
+}
+/*fetch(".../data.json").then(function(resp) {
+  return resp.json();
+}).then(function(data) {
+  console.log(data);
+})*/
+const App = () => {
+  /*const [posts, setPosts] = useState([]);
+  useEffect(() => {
+    fetch('http://localhost:3001/metrics')
+      .then(res => {
+        console.log(res)
+        return res.json();
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  })*/
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Chart />
+      <button onClick={updateChart}>Fetch</button>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
